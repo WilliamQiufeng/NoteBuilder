@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../../header/tag/generic_tag.hpp"
+#include "tag/generic_tag.hpp"
 
 /*
  * Generic tag assignment operator
@@ -114,6 +114,9 @@ std::string generic_tag::type_to_string(unsigned char type) {
 			break;
 		case INT_ARRAY:
 			ss << "INT ARRAY";
+			break;
+		case LONG_ARRAY:
+			ss << "LONG ARRAY";
 			break;
 		default:
 			ss << "UNKNOWN";

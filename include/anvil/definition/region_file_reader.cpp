@@ -19,24 +19,25 @@
 
 #include <sstream>
 #include <vector>
-#include "../header/chunk_info.hpp"
-#include "../header/chunk_tag.hpp"
-#include "../header/compression.hpp"
-#include "../header/region_dim.hpp"
-#include "../header/region_file_reader.hpp"
-#include "../header/tag/byte_tag.hpp"
-#include "../header/tag/byte_array_tag.hpp"
-#include "../header/tag/compound_tag.hpp"
-#include "../header/tag/double_tag.hpp"
-#include "../header/tag/end_tag.hpp"
-#include "../header/tag/float_tag.hpp"
-#include "../header/tag/generic_tag.hpp"
-#include "../header/tag/int_tag.hpp"
-#include "../header/tag/int_array_tag.hpp"
-#include "../header/tag/list_tag.hpp"
-#include "../header/tag/long_tag.hpp"
-#include "../header/tag/short_tag.hpp"
-#include "../header/tag/string_tag.hpp"
+#include "chunk_info.hpp"
+#include "chunk_tag.hpp"
+#include "compression.hpp"
+#include "region_dim.hpp"
+#include "region_file_reader.hpp"
+#include "tag/byte_tag.hpp"
+#include "tag/byte_array_tag.hpp"
+#include "tag/compound_tag.hpp"
+#include "tag/double_tag.hpp"
+#include "tag/end_tag.hpp"
+#include "tag/float_tag.hpp"
+#include "tag/generic_tag.hpp"
+#include "tag/int_tag.hpp"
+#include "tag/int_array_tag.hpp"
+#include "tag/list_tag.hpp"
+#include "tag/long_tag.hpp"
+#include "tag/long_array_tag.hpp"
+#include "tag/short_tag.hpp"
+#include "tag/string_tag.hpp"
 
 /*
  * Region file reader assignment operator
@@ -311,6 +312,9 @@ generic_tag *region_file_reader::parse_tag(byte_stream &stream, bool is_list, ch
 			break;
 		case generic_tag::INT_ARRAY:
 			tag = new int_array_tag(name, read_array_value<int>(stream));
+			break;
+		case generic_tag::LONG_ARRAY:
+			tag = new long_array_tag(name, read_array_value<long>(stream));
 			break;
 		default:
 			throw std::runtime_error("Unknown tag type");
