@@ -12,7 +12,9 @@ set(CMAKE_CXX_STANDARD 17)
 #    include_directories(${Boost_INCLUDE_DIRS})
 #
 #endif ()
-
+add_subdirectory(third_party/midifile)
+#include(third_party/midifile/CMakeLists.txt)
+#add_dependencies(third_party/midifile)
 include_directories(src)
 
 #include_directories(/usr/local/opt/zlib/include)

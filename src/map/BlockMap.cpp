@@ -1,5 +1,5 @@
 //
-// Created by Qiufeng54321 on 2019-09-02.
+// Created by Qiufeng54321 on 2019-09-03.
 // Copyright (C) 2019  Qiufeng54321
 //
 //    This program is free software: you can redistribute it and/or modify
@@ -16,15 +16,10 @@
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-#ifndef NOTEBUILDER_BLOCKMAP_HPP
-#define NOTEBUILDER_BLOCKMAP_HPP
-
-#include "nbt/CompoundTag.hpp"
+#include "BlockMap.hpp"
 
 namespace InGameOperation {
-	class BlockMap {
-		NBT::CompoundTag root;
-	};
+	NBT::CompoundTag *BlockMap::getBlock(int x, int y, int z) {
+		return nullptr;
+	}
 }
-
-#endif //NOTEBUILDER_BLOCKMAP_HPP

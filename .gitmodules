@@ -1,0 +1,3 @@
+[submodule "/williamye/program/NoteBuilder/third_party/midifile"]
+	path = /williamye/program/NoteBuilder/third_party/midifile
+	url = https://github.com/craigsapp/midifile.git
