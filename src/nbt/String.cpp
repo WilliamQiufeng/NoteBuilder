@@ -32,8 +32,8 @@ void NBT::String::toString(std::ostringstream &os) {
 	os << "\"";
 	//Unescape string
 	auto strcpy = str;
-	replace(str, "\n", "\\n");
-	replace(str, "\"", "\\\"");
+	replace(strcpy, "\n", "\\n");
+	replace(strcpy, "\"", "\\\"");
 	os << strcpy;
 	os << "\"";
 }

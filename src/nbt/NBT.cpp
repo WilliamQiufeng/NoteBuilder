@@ -21,7 +21,5 @@
 #include <utility>
 
 namespace NBT {
-	Tag *NBT::operator[](std::string key) {
-		return tag.get(std::move(key));
-	}
+
 }

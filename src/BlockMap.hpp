@@ -19,8 +19,12 @@
 #ifndef NOTEBUILDER_BLOCKMAP_HPP
 #define NOTEBUILDER_BLOCKMAP_HPP
 
+#include "nbt/CompoundTag.hpp"
+
 namespace InGameOperation {
-	class
+	class BlockMap {
+		NBT::CompoundTag root;
+	};
 }
 
 #endif //NOTEBUILDER_BLOCKMAP_HPP

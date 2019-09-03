@@ -5,6 +5,7 @@
 #include <nbt/String.hpp>
 #include <nbt/Array.hpp>
 #include <nbt/List.hpp>
+#include <nbt/NBT.hpp>
 
 void testNBT();
 
@@ -16,13 +17,13 @@ int main() {
 void testNBT() {
 	using namespace NBT;
 	auto *compoundTag = new CompoundTag;
-	compoundTag->set("hi", new String("hello"));
+	compoundTag->set("hi", new String("\"hello\n\""));
 	auto *subCompound = new CompoundTag();
 	auto *array = new IntArray;
 	array->add(new GenericTag<int>(2));
 	array->add(new GenericTag<int>(3));
 	auto *list = new List<long>;
-	list->add(new GenericTag<long>(1402738));
+	list->add(new GenericTag<long>(LONG_MAX));
 	subCompound->set("arr", array);
 	subCompound->set("list", list);
 	compoundTag->set("sub", subCompound);

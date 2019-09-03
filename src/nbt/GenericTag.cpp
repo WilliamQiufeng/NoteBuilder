@@ -65,6 +65,19 @@ namespace NBT {
 		}
 	}
 
+/*
+	void replace_all(std::string & s, std::string const & t, std::string const & w) {
+		std::string::size_type pos = s.find(t), t_size = t.size(), r_size = w.size();
+		while (pos != std::string::npos) { // found
+			s.replace(pos, t_size, w);
+			pos = s.find(t, pos + r_size);
+		}
+
+		*//*————————————————
+		版权声明：本文为CSDN博主「CodeArhat」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+		原文链接：https://blog.csdn.net/CodeArhat/article/details/6850536*//*
+	}*/
+
 	DEFINE_TEMPLATE_INIT_FOR(GenericTag)
 
 }

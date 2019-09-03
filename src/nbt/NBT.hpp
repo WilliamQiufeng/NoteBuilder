@@ -24,12 +24,9 @@
 #include "CompoundTag.hpp"
 
 namespace NBT {
-	class NBT {
+	class NBTRoot : public CompoundTag {
 	public:
-		CompoundTag &tag;
-
-		Tag *operator[](std::string key);
-
+		std::string tag;
 	};
 }
 

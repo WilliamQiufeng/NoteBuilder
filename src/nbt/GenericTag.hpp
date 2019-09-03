@@ -37,6 +37,9 @@ namespace NBT {
 		static char getArrayPrefix();
 
 		void toString(std::ostringstream &os) override;
+
+
+//		void replace_all(std::string & s, std::string const & t, std::string const & w);
 	};
 
 
