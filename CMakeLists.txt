@@ -3,36 +3,37 @@ project(NoteBuilder)
 
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(Boost 1.57.0 COMPONENTS regex REQUIRED)
+#find_package(Boost 1.57.0 COMPONENTS regex REQUIRED)
+#
+#if (Boost_FOUND)
+#    message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+#    message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
+#    message(STATUS "Boost_VERSION: ${Boost_VERSION}")
+#    include_directories(${Boost_INCLUDE_DIRS})
+#
+#endif ()
 
-if (Boost_FOUND)
-    message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
-    message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
-    message(STATUS "Boost_VERSION: ${Boost_VERSION}")
-    include_directories(${Boost_INCLUDE_DIRS})
+include_directories(src)
 
-endif ()
+#include_directories(/usr/local/opt/zlib/include)
 
-add_subdirectory(include)
+#link_directories(/usr/local/lib)
 
-include_directories(include/anvil/header)
+file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/*.hpp)
 
-include_directories(/usr/local/opt/zlib/include)
+message("Source files found are: ${SOURCES}")
 
-link_directories(/usr/local/lib)
+add_executable(NoteBuilder ${SOURCES})
 
-add_executable(NoteBuilder src/cpp/main.cpp)
+#target_link_libraries(NoteBuilder include)
 
-target_link_libraries(NoteBuilder anvil)
+#target_link_libraries(NoteBuilder /usr/local/opt/zlib/lib/libz.dylib)
 
-target_link_libraries(NoteBuilder /usr/local/opt/zlib/lib/libz.dylib)
-
-
-if (Boost_FOUND)
-    message(${Boost_LIBRARIES})
-    target_link_libraries(NoteBuilder ${Boost_LIBRARIES})
-
-endif ()
+#if (Boost_FOUND)
+#    message(${Boost_LIBRARIES})
+#    target_link_libraries(NoteBuilder ${Boost_LIBRARIES})
+#
+#endif ()
 
 #target_link_libraries(NoteBuilder /williamye/program/NoteBuilder/libs/libanvil.a)
 
