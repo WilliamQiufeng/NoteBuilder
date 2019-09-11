@@ -16,18 +16,17 @@
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#include <libnbtplusplus/include/tag_array.h>
+#include "libnbtplusplus/include/tag_string.h"
+#include "libnbtplusplus/include/tag_primitive.h"
+#include <iostream>
 #include "StructureBlockMap.hpp"
 #include "value.h"
 #include "tag_compound.h"
 #include "tag_list.h"
 
 InGameOperation::StructureBlockMap::CompoundTagType &InGameOperation::StructureBlockMap::getBlock(int x, int y, int z) {
-
-	nbt::value listTag = static_cast<nbt::value &&>(root.at(TagNameStandard::BLOCKS));
-	nbt::value x_list = static_cast<nbt::value &&>(listTag.as<nbt::tag_list>()[x]);
-	nbt::value y_list = static_cast<nbt::value &&>(x_list.as<nbt::tag_list>()[y]);
-	nbt::value z_ = static_cast<nbt::value &&>(y_list.as<nbt::tag_list>()[z]);
-	auto &target_block = z_.as<nbt::tag_compound>();
+	auto &target_block = blocks[x][y][z];
 	return target_block;
 //	std::stringstream ss;
 //	ss << "Block not found at: ("
@@ -36,20 +35,93 @@ InGameOperation::StructureBlockMap::CompoundTagType &InGameOperation::StructureB
 }
 
 void InGameOperation::StructureBlockMap::load() {
+	nbt::tag_string &author_str = root[TagNameStandard::AUTHOR].as<nbt::tag_string>();
+	this->author = author_str.get();
 
+	this->DataVersion = (int32_t) root[TagNameStandard::DATA_VERSION];
+
+	nbt::tag_list &block_list = root[TagNameStandard::BLOCKS].as<nbt::tag_list>();
+	nbt::tag_list &entity_list = root[TagNameStandard::ENTITIES].as<nbt::tag_list>();
+	nbt::tag_list &palette_list = root[TagNameStandard::PALETTE].as<nbt::tag_list>();
+	nbt::tag_list &size = root[TagNameStandard::SIZE].as<nbt::tag_list>();
+	this->size = {(int32_t) size[0], (int32_t) size[1], (int32_t) size[2]};
+
+	for (auto &i : block_list) {
+		//Get the block
+		nbt::tag_compound &block = i.as<nbt::tag_compound>();
+
+		//Get the block's position
+		nbt::tag_list &pos_arr = block[TagNameStandard::POS].as<nbt::tag_list>();
+
+//		//Get the state of the block
+//		auto stateInt = (int32_t)block[TagNameStandard::STATE];
+//
+//		//Set extra info(nbt)
+//		nbt::tag_compound& targ_block_nbt = palette_list[stateInt].as<nbt::tag_compound>();
+
+		//Insert empty map if not exist
+		_insertAtMap(this->blocks, (int32_t) pos_arr[0], std::map<int, std::map<int, nbt::tag_compound>>());
+		_insertAtMap(this->blocks[(int32_t) pos_arr[0]], (int32_t) pos_arr[1], std::map<int, nbt::tag_compound>());
+
+
+		std::cout << block << std::endl;
+
+		this->blocks[(int32_t) pos_arr[0]][(int32_t) pos_arr[1]][(int32_t) pos_arr[2]] = block;
+	}
+
+	for (auto &i : entity_list) {
+		//Get the entity
+		nbt::tag_compound &entity = i.as<nbt::tag_compound>();
+
+		//Get the entity's position
+		nbt::tag_list &pos_arr = entity[TagNameStandard::POS].as<nbt::tag_list>();
+
+		//Insert empty map if not exist
+		_insertAtMap(this->entities, (int32_t) pos_arr[0], std::map<int, std::map<int, nbt::tag_compound>>());
+		_insertAtMap(this->entities[(int32_t) pos_arr[0]], (int32_t) pos_arr[1], std::map<int, nbt::tag_compound>());
+
+
+		std::cout << entity << std::endl;
+
+		this->entities[(int32_t) pos_arr[0]][(int32_t) pos_arr[1]][(int32_t) pos_arr[2]] = entity;
+	}
+
+	for (auto &pal : palette_list) {
+		std::cout << pal << std::endl;
+		palette.push_back(pal.as<nbt::tag_compound>());
+	}
 }
 
 int InGameOperation::StructureBlockMap::getLength() {
-	nbt::value len = static_cast<nbt::value &&>(root.at(TagNameStandard::LENGTH));
-	return (int) len;
+	return size.x;
 }
 
 int InGameOperation::StructureBlockMap::getWidth() {
-	nbt::value len = static_cast<nbt::value &&>(root.at(TagNameStandard::WIDTH));
-	return (int) len;
+	return size.z;
 }
 
 int InGameOperation::StructureBlockMap::getHeight() {
-	nbt::value len = static_cast<nbt::value &&>(root.at(TagNameStandard::HEIGHT));
-	return (int) len;
+	return size.y;
+}
+
+int InGameOperation::StructureBlockMap::getSize() {
+	//Calculates total amount of blocks in the map that is not air.
+	auto &list = root[TagNameStandard::BLOCKS].as<nbt::tag_list>();
+	return list.size();
+}
+
+template<typename MapKey, typename MapValue>
+void InGameOperation::StructureBlockMap::_insertAtMap(std::map<MapKey, MapValue> &map, MapKey key, MapValue value) {
+	typename std::map<MapKey, MapValue>::iterator res = map.find(key);
+	if (res == map.end()) {
+		map[key] = value;
+	}
+}
+
+InGameOperation::StructureBlockMap::CompoundTagType &InGameOperation::StructureBlockMap::getPalette(int state) {
+	return palette[state];
+}
+
+nbt::tag_compound &InGameOperation::StructureBlockMap::getPalette(nbt::tag_compound &fromBlock) {
+	return getPalette((int32_t) fromBlock[TagNameStandard::STATE]);
 }

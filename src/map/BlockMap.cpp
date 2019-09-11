@@ -26,7 +26,14 @@ namespace InGameOperation {
 			TagNameStandard::WIDTH = "width",
 			TagNameStandard::BLOCKS = "blocks",
 			TagNameStandard::BLOCK = "block",
-			TagNameStandard::DATA = "data";
+			TagNameStandard::ENTITIES = "entities",
+			TagNameStandard::DATA = "data",
+			TagNameStandard::AUTHOR = "author",
+			TagNameStandard::SIZE = "size",
+			TagNameStandard::POS = "pos",
+			TagNameStandard::STATE = "state",
+			TagNameStandard::PALETTE = "palette",
+			TagNameStandard::DATA_VERSION = "DataVersion";
 
 	template<typename Root>
 	StructureBlockMap BlockMap<Root>::fromStructure(std::string path) {

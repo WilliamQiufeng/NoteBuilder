@@ -111,10 +111,6 @@ namespace InGameOperation::Generation {
 
 		void setCurrentZ(int currentZ);
 
-		int getSize() const;
-
-		void setSize(int size);
-
 		int getNextGenBuffer() const;
 
 		void setNextGenBuffer(int nextGenBuffer);
@@ -126,7 +122,7 @@ namespace InGameOperation::Generation {
 	protected:
 		std::vector<Data::Position> positions{};
 		int positionIndex = 0;
-		int current_x = 0, current_y = 0, current_z = 0, size = 0, next_gen_buffer = 0;
+		int current_x = 0, current_y = 0, current_z = 0, next_gen_buffer = 0;
 
 		void _generate_method_coreplacing();
 
@@ -134,7 +130,6 @@ namespace InGameOperation::Generation {
 
 		std::string _generate_next_generation_block_coreplacing();
 
-		void calculate_size();
 
 	};
 }

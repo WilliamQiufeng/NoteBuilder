@@ -62,7 +62,14 @@ namespace InGameOperation {
 				WIDTH,
 				BLOCKS,
 				BLOCK,
-				DATA;
+				ENTITIES,
+				DATA,
+				AUTHOR,
+				SIZE,
+				POS,
+				STATE,
+				PALETTE,
+				DATA_VERSION;
 	};
 
 	enum class RootTagIndex : unsigned int {
@@ -87,7 +94,7 @@ namespace InGameOperation {
 
 		virtual CompoundTagType &getBlock(int x, int y, int z) = 0;
 
-		virtual int getLength() = 0, getWidth() = 0, getHeight() = 0;
+		virtual int getLength() = 0, getWidth() = 0, getHeight() = 0, getSize() = 0;
 	};
 
 

@@ -19,13 +19,26 @@
 #ifndef NOTEBUILDER_STRUCTUREBLOCKMAP_HPP
 #define NOTEBUILDER_STRUCTUREBLOCKMAP_HPP
 
+#include <data/Position.hpp>
 #include "tag_compound.h"
 #include "BlockMap.hpp"
 
 namespace InGameOperation {
 	class StructureBlockMap : public BlockMap<nbt::tag_compound> {
 	public:
+		std::string author;
+		int DataVersion;
+		std::map<int, std::map<int, std::map<int, nbt::tag_compound>>> blocks, entities;
+		std::vector<nbt::tag_compound> palette;
+		Data::Position size;
+
+
 		CompoundTagType &getBlock(int x, int y, int z) override;
+
+		CompoundTagType &getPalette(int state);
+
+		CompoundTagType &getPalette(CompoundTagType &fromBlock);
+
 
 		void load() override;
 
@@ -34,6 +47,12 @@ namespace InGameOperation {
 		int getWidth() override;
 
 		int getHeight() override;
+
+		int getSize() override;
+
+	protected:
+		template<typename MapKey, typename MapValue>
+		void _insertAtMap(std::map<MapKey, MapValue> &map, MapKey key, MapValue value);
 	};
 }
 

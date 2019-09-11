@@ -19,7 +19,8 @@
 #include <iostream>
 #include <libnbtplusplus/include/tag_string.h>
 #include "FallingBlockGenerator.hpp"
-#include "libanvil/include/tag/string_tag.hpp"
+#include "libnbtplusplus/include/tag_list.h"
+
 
 namespace InGameOperation::Generation {
 	template<typename BlockMapType>
@@ -50,12 +51,14 @@ namespace InGameOperation::Generation {
 			throw std::runtime_error(
 					"Falling Block Generator now doesn't support methods other than the Co-replacing Method!");
 		}
+		return "";
 	}
 
 	template<typename BlockMapType>
 	std::string FallingBlockGenerator<BlockMapType>::_generate_next_generation_block_coreplacing() {
+		//TODO: finish the generation block algorithm
 		int self_position = this->next_gen_buffer;
-		if (this->next_gen_buffer < this->size) {
+		if (this->next_gen_buffer < this->map.getSize()) {
 			this->next_gen_buffer += this->option.maxStackHeight - Constants::STACK_FUNCTIONAL_BLOCKS;
 			this->positionIndex++;
 			if (positionIndex >= this->positions.size()) {
@@ -77,6 +80,8 @@ namespace InGameOperation::Generation {
 	//Constructors, setters, and getters
 	template<typename BlockMapType>
 	FallingBlockGenerator<BlockMapType>::FallingBlockGenerator(Option option) {
+		static_assert(std::is_base_of<BlockMap<nbt::tag_compound>, BlockMapType>::value, "The type of BlockMapType must"
+																						 "be derived from BlockMap");
 		this->option = option;
 		positions = {};
 	}
@@ -84,7 +89,6 @@ namespace InGameOperation::Generation {
 	template<typename BlockMapType>
 	void FallingBlockGenerator<BlockMapType>::setMap(BlockMapType map) {
 		this->map = map;
-		calculate_size();
 	}
 
 	template<typename BlockMapType>
@@ -102,30 +106,8 @@ namespace InGameOperation::Generation {
 	template<typename BlockMapType>
 	void FallingBlockGenerator<BlockMapType>::reset_data() {
 		this->current_x = this->current_y = this->current_z = this->next_gen_buffer = this->positionIndex = 0;
-		calculate_size();
 	}
 
-	template<typename BlockMapType>
-	void FallingBlockGenerator<BlockMapType>::calculate_size() {
-		//this->size = this->map.getWidth() * this->map.getLength() * this->map.getHeight();
-
-		//Calculates total amount of blocks in the map that is not air.
-		//O(n^3), which is very not effective and should be improved.
-		this->size = 0;
-		for (int x = 0; x < this->map.getLength(); x++) {
-			for (int y = 0; y < this->map.getHeight(); y++) {
-				for (int z = 0; z < this->map.getWidth(); z++) {
-					auto block = this->map.getBlock(x, y, z);
-					nbt::value name = static_cast<nbt::value &&>(block[TagNameStandard::BLOCK]);
-					if (name.as<nbt::tag_string>().get() == "minecraft:air" or
-						name.as<nbt::tag_string>().get() == "air") {
-						continue;
-					}
-					this->size++;
-				}
-			}
-		}
-	}
 
 	template<typename BlockMapType>
 	int FallingBlockGenerator<BlockMapType>::getPositionIndex() const {
@@ -165,16 +147,6 @@ namespace InGameOperation::Generation {
 	template<typename BlockMapType>
 	void FallingBlockGenerator<BlockMapType>::setCurrentZ(int currentZ) {
 		current_z = currentZ;
-	}
-
-	template<typename BlockMapType>
-	int FallingBlockGenerator<BlockMapType>::getSize() const {
-		return size;
-	}
-
-	template<typename BlockMapType>
-	void FallingBlockGenerator<BlockMapType>::setSize(int size) {
-		FallingBlockGenerator::size = size;
 	}
 
 	template<typename BlockMapType>
