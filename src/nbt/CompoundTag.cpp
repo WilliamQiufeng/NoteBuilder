@@ -32,8 +32,8 @@ namespace NBT {
 		return children;
 	}
 
-	std::string CompoundTag::getType() {
-		return "Compound";
+	TypeName CompoundTag::getType() {
+		return {COMPOUND};
 	}
 
 	void CompoundTag::toString(std::ostringstream &os) {

@@ -17,9 +17,25 @@
 //
 
 #include "BlockMap.hpp"
+#include "StructureBlockMap.hpp"
 
 namespace InGameOperation {
-	NBT::CompoundTag *BlockMap::getBlock(int x, int y, int z) {
+	std::string
+			TagNameStandard::LENGTH = "length",
+			TagNameStandard::HEIGHT = "height",
+			TagNameStandard::WIDTH = "width",
+			TagNameStandard::BLOCKS = "blocks",
+			TagNameStandard::BLOCK = "block",
+			TagNameStandard::DATA = "data";
+
+	template<typename Root>
+	StructureBlockMap BlockMap<Root>::fromStructure(std::string path) {
+		BlockMap map;
+		return map;
+	}
+
+	template<typename Root>
+	typename BlockMap<Root>::CompoundTagType &BlockMap<Root>::getBlock(int x, int y, int z) {
 		return nullptr;
 	}
 }

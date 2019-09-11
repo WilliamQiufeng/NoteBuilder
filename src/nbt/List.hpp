@@ -27,9 +27,15 @@ namespace NBT {
 	 * The template here should be a tag type!
 	 * @tparam T
 	 */
-	template<typename T>
 	class List : public Tag {
 	public:
+		List(Tag::Types element_type);
+
+		Tag::Types element_type;
+
+		TypeName getElementType();
+
+		TypeName getDynamicType();
 		DEFINE_LIST_CLASS_MEMBERS(List)
 	};
 }

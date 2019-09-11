@@ -18,32 +18,29 @@
 
 #include "List.hpp"
 
+#include <utility>
+
 namespace NBT {
-	template<typename T>
-	void List<T>::insert(std::size_t index, generic_type *val) {
+	void List::insert(std::size_t index, generic_type *val) {
 		this->value[index] = val;
 	}
 
-	template<typename T>
-	typename List<T>::generic_type *List<T>::get(std::size_t index) {
+	typename List::generic_type *List::get(std::size_t index) {
 		return this->value[index];
 	}
 
-	template<typename T>
-	void List<T>::add(generic_type *val) {
+	void List::add(generic_type *val) {
 		this->value.push_back(val);
 	}
 
-	template<typename T>
-	std::string List<T>::getType() {
-		return GenericTag<T>::getType() + "L";
+	TypeName List::getType() {
+		return {LIST};
 	}
 
-	template<typename T>
-	void List<T>::toString(std::ostringstream &os) {
+	void List::toString(std::ostringstream &os) {
 		os << "[";
 		auto vect = (type) this->value;
-		for (typename type::iterator iter = vect.begin(); iter != vect.end(); iter++) {
+		for (auto iter = vect.begin(); iter != vect.end(); iter++) {
 			(*iter)->toString(os);
 			if (iter + 1 != vect.end())
 				os << ",";
@@ -51,8 +48,18 @@ namespace NBT {
 		os << "]";
 	}
 
-	template<typename T>
-	List<T>::List() {}
+	TypeName List::getElementType() {
+		//T::getType();
+		return {element_type};
+	}
 
-	DEFINE_TEMPLATE_INIT_FOR(List)
+	TypeName List::getDynamicType() {
+		return {LIST, {getElementType()}};
+	}
+
+	List::List(Tag::Types element_type) {
+		this->element_type = element_type;
+	};
+
+	//DEFINE_TEMPLATE_INIT_FOR(List)
 }

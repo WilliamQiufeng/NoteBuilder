@@ -22,6 +22,7 @@
 #include "Header.hpp"
 
 namespace NBT {
+	struct TypeName;
 	class Tag {
 	public:
 		typedef void type;
@@ -29,9 +30,19 @@ namespace NBT {
 		template<typename T>
 		T get() {};
 
-		static std::string getType();
+		static TypeName getType();
 
 		virtual void toString(std::ostringstream &os) {};
+
+
+		enum Types {
+			BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, BYTE_ARRAY, STRING, LIST, COMPOUND, INT_ARRAY, LONG_ARRAY, BASIC
+		};
+	};
+
+	struct TypeName {
+		Tag::Types type;
+		std::vector<TypeName> temp;
 	};
 }
 

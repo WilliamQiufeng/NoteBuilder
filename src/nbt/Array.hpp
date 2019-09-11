@@ -25,7 +25,7 @@ namespace NBT {
 	template<typename T>
 	class Array : public Tag {
 	public:
-		DEFINE_LIST_CLASS_MEMBERS(Array)
+		DEFINE_ARRAY_CLASS_MEMBERS(Array)
 	};
 
 	typedef Array<int> IntArray;

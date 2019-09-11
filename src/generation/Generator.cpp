@@ -17,3 +17,34 @@
 //
 
 #include "Generator.hpp"
+#include "map/StructureBlockMap.hpp"
+
+namespace InGameOperation::Generation {
+	template<typename OutputType, typename BlockMapType>
+	typename Generation<OutputType, BlockMapType>::output_t &Generation<OutputType, BlockMapType>::getOutput() {
+		return output;
+	}
+
+	template<typename OutputType, typename BlockMapType>
+	const Option &Generation<OutputType, BlockMapType>::getOption() const {
+		return option;
+	}
+
+	template<typename OutputType, typename BlockMapType>
+	void Generation<OutputType, BlockMapType>::setOption(const Option &option) {
+		Generation::option = option;
+	}
+
+	template<typename OutputType, typename BlockMapType>
+	BlockMapType Generation<OutputType, BlockMapType>::getMap() const {
+		return map;
+	}
+
+	template<typename OutputType, typename BlockMapType>
+	void Generation<OutputType, BlockMapType>::setMap(BlockMapType map) {
+		Generation::map = map;
+	}
+
+	template
+	class Generation<std::ostringstream, StructureBlockMap>;
+}

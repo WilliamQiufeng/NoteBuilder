@@ -19,7 +19,7 @@
 #include "Tag.hpp"
 
 namespace NBT {
-	std::string Tag::getType() {
-		return "BasicTag";
+	TypeName Tag::getType() {
+		return {BASIC};
 	}
 }

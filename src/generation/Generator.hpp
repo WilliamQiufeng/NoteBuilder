@@ -19,10 +19,32 @@
 #ifndef NOTEBUILDER_GENERATOR_HPP
 #define NOTEBUILDER_GENERATOR_HPP
 
+#include <map/BlockMap.hpp>
+#include "GenerationOption.hpp"
+
 namespace InGameOperation::Generation {
+	template<typename OutputType, typename BlockMapType>
 	class Generation {
+	public:
+		typedef OutputType output_t;
+		output_t output;
+		Option option;
+		BlockMapType map;
+
 		virtual void generate() = 0;
+
+		virtual output_t &getOutput();
+
+		[[nodiscard]] virtual const Option &getOption() const;
+
+		virtual void setOption(const Option &option);
+
+		virtual BlockMapType getMap() const;
+
+		virtual void setMap(BlockMapType map);
 	};
+
+
 };
 
 #endif //NOTEBUILDER_GENERATOR_HPP

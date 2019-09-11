@@ -19,6 +19,9 @@
 #include "Header.hpp"
 #include "GenericTag.hpp"
 
+#define IF_TYPE_IS(type) if(typeid(T) == typeid(type))
+#define ELSE_IF_TYPE_IS(type) else IF_TYPE_IS(type)
+
 namespace NBT {
 	template<typename T>
 	typename GenericTag<T>::type &GenericTag<T>::get() {
@@ -26,20 +29,30 @@ namespace NBT {
 	}
 
 	template<typename T>
-	std::string GenericTag<T>::getType() {
-		return typeid(type).name();
+	TypeName GenericTag<T>::getType() {
+		IF_TYPE_IS(int) {
+			return {INT};
+		} ELSE_IF_TYPE_IS(short) {
+			return {SHORT};
+		} ELSE_IF_TYPE_IS(long) {
+			return {LONG};
+		} ELSE_IF_TYPE_IS(unsigned char) {
+			return {BYTE};
+		} ELSE_IF_TYPE_IS(float) {
+			return {FLOAT};
+		} ELSE_IF_TYPE_IS(double) {
+			return {DOUBLE};
+		}
 	}
 
 	template<typename T>
 	char GenericTag<T>::getArrayPrefix() {
-#define IF_TYPE_IS(type) if(typeid(T) == typeid(type))
-#define ELSE_IF_TYPE_IS(type) else IF_TYPE_IS(type)
 
 		IF_TYPE_IS(int) {
 			return 'I';
 		} ELSE_IF_TYPE_IS(long) {
 			return 'L';
-		} ELSE_IF_TYPE_IS(char) {
+		} ELSE_IF_TYPE_IS(unsigned char) {
 			return 'B';
 		} ELSE_IF_TYPE_IS(double) {
 			return 'D';
@@ -50,8 +63,6 @@ namespace NBT {
 		} else {
 			throw std::runtime_error("Generic Array Element Type not supported by minecraft.");
 		}
-#undef IF_TYPE_IS
-#undef ELSE_IF_TYPE_IS
 	}
 
 	template<typename T>
@@ -65,19 +76,9 @@ namespace NBT {
 		}
 	}
 
-/*
-	void replace_all(std::string & s, std::string const & t, std::string const & w) {
-		std::string::size_type pos = s.find(t), t_size = t.size(), r_size = w.size();
-		while (pos != std::string::npos) { // found
-			s.replace(pos, t_size, w);
-			pos = s.find(t, pos + r_size);
-		}
-
-		*//*————————————————
-		版权声明：本文为CSDN博主「CodeArhat」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
-		原文链接：https://blog.csdn.net/CodeArhat/article/details/6850536*//*
-	}*/
 
 	DEFINE_TEMPLATE_INIT_FOR(GenericTag)
 
 }
+#undef IF_TYPE_IS
+#undef ELSE_IF_TYPE_IS

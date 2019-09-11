@@ -35,8 +35,15 @@ namespace NBT {
 	}
 
 	template<typename T>
-	std::string Array<T>::getType() {
-		return GenericTag<T>::getType() + "_Array";
+	TypeName Array<T>::getType() {
+		if (typeid(T) == typeid(int))
+			return {INT_ARRAY};
+		else if (typeid(T) == typeid(long))
+			return {LONG_ARRAY};
+		else if (typeid(T) == typeid(unsigned char))
+			return {BYTE_ARRAY};
+		else
+			throw std::runtime_error("Not recognized array type");
 	}
 
 	template<typename T>

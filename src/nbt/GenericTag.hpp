@@ -32,7 +32,7 @@ namespace NBT {
 
 		type &get();
 
-		static std::string getType();
+		static TypeName getType();
 
 		static char getArrayPrefix();
 

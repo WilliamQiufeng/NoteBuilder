@@ -43,3 +43,5 @@ std::string NBT::String::get() {
 }
 
 NBT::String::String(const NBT::String::type &str) : str(str) {}
+
+

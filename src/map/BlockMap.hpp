@@ -16,16 +16,78 @@
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+/**
+ * Block Map Documentation:
+ *
+ * BlockMap is an abstract class which stores blocks in an area.
+ * 'template<typename Root> typename BlockMap<Root>::CompoundTagType* root' is the root tag which contains all block
+ * 		data.
+ * 	Here is the standard about the format of the data storage, which is below:
+ * 		The format basically looks like this:
+ * 			Compound 'root' {
+ * 				int 'length' 	//length on x-axis
+ * 				int 'width'		//width  on z-axis
+ * 				int 'height'	//height on y-axis
+ * 				List<List<List<int>>> 'blocks' [ // x
+ * 					List<List<Compound>> [ // y
+ * 						List<Compound> [ // z
+ * 							Compound {
+ * 								String 'block'
+ * 								Compound 'data' //NBT of the block
+ * 							}
+ * 							...
+ * 						]
+ * 						...
+ * 					]
+ * 					...
+ * 				]
+ * 			}
+ * 		The 'blocks' tag is a 3-D array which stores blocks. To get the block in a given relative position (Say (x,y,z))
+ * 			, The result will be 'blocks'[x][y][z].
+ * 		NOTE: The position of the tags in the root should be ordered.
+ *
+ */
+
 #ifndef NOTEBUILDER_BLOCKMAP_HPP
 #define NOTEBUILDER_BLOCKMAP_HPP
 
-#include "nbt/CompoundTag.hpp"
+#include "Header.hpp"
 
 namespace InGameOperation {
-	class BlockMap {
-		NBT::CompoundTag *root;
+	class TagNameStandard {
+	public:
+		static std::string
+				LENGTH,
+				HEIGHT,
+				WIDTH,
+				BLOCKS,
+				BLOCK,
+				DATA;
+	};
 
-		virtual NBT::CompoundTag *getBlock(int x, int y, int z);
+	enum class RootTagIndex : unsigned int {
+		LENGTH = 0,
+		WIDTH = 1,
+		HEIGHT = 2,
+		BLOCKS = 3,
+		BLOCK = 0,
+		DATA = 1
+	};
+
+	template<typename Root>
+	class BlockMap {
+	public:
+		typedef Root CompoundTagType;
+		CompoundTagType root;
+
+
+		static StructureBlockMap fromStructure(std::string path);
+
+		virtual void load() = 0;
+
+		virtual CompoundTagType &getBlock(int x, int y, int z) = 0;
+
+		virtual int getLength() = 0, getWidth() = 0, getHeight() = 0;
 	};
 
 
