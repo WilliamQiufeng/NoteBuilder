@@ -67,8 +67,11 @@ namespace InGameOperation {
 				AUTHOR,
 				SIZE,
 				POS,
+				NBT,
 				STATE,
 				PALETTE,
+				NAME,
+				PROPERTIES,
 				DATA_VERSION;
 	};
 

@@ -17,7 +17,7 @@ int main() {
 
 void testGenerator() {
 	std::ifstream istream(
-			"/Users/jessiezhang/Library/Application Support/TLauncherMC/versions/fabric-loader-0.4.8+build.158-1.14.2+build.2/fabric-loader-0.4.8+build.158-1.14.2+build.2/data/minecraft/structures/fossil/spine_3.nbt",
+			"/Users/jessiezhang/Library/Application Support/TLauncherMC/versions/fabric-loader-0.4.8+build.158-1.14.2+build.2/fabric-loader-0.4.8+build.158-1.14.2+build.2/data/minecraft/structures/igloo/top.nbt",
 			std::ios::binary);
 	zlib::izlibstream izlibstream(istream);
 
@@ -28,7 +28,6 @@ void testGenerator() {
 	auto generator = InGameOperation::Generation::FallingBlockGenerator<InGameOperation::StructureBlockMap>();
 	generator.setMap(map);
 //	std::cout << generator.getSize() << std::endl;
-	generator.reset_data();
 
 	std::cout << "This nbt is made by " << map.author << ", DataVersion: " << map.DataVersion << std::endl;
 }

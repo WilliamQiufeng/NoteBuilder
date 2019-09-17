@@ -78,6 +78,7 @@
 #include "generation/Generator.hpp"
 #include "map/StructureBlockMap.hpp"
 #include "data/Position.hpp"
+#include "libnbtplusplus/include/tag_list.h"
 
 namespace InGameOperation::Generation {
 	template<typename BlockMapType>
@@ -93,43 +94,21 @@ namespace InGameOperation::Generation {
 
 		void setPositions(std::vector<Data::Position> positions);
 
-		void reset_data();
-
-		int getPositionIndex() const;
-
-		void setPositionIndex(int positionIndex);
-
-		int getCurrentX() const;
-
-		void setCurrentX(int currentX);
-
-		int getCurrentY() const;
-
-		void setCurrentY(int currentY);
-
-		int getCurrentZ() const;
-
-		void setCurrentZ(int currentZ);
-
-		int getNextGenBuffer() const;
-
-		void setNextGenBuffer(int nextGenBuffer);
-
 		enum Constants : unsigned int {
 			STACK_FUNCTIONAL_BLOCKS = 2
 		};
 
 	protected:
 		std::vector<Data::Position> positions{};
-		int positionIndex = 0;
-		int current_x = 0, current_y = 0, current_z = 0, next_gen_buffer = 0;
 
 		void _generate_method_coreplacing();
 
 		std::string _generate_next_generation_block();
 
-		std::string _generate_next_generation_block_coreplacing();
+		std::string _generate_next_generation_block_coreplacing(int gen_buffer, int positionIndex);
 
+		std::string _generate_generation_stack(nbt::tag_list::iterator begin, nbt::tag_list::iterator end,
+											   Data::Position target_base_pos);
 
 	};
 }

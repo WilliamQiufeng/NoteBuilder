@@ -45,7 +45,7 @@ namespace InGameOperation::Generation {
 	std::string FallingBlockGenerator<BlockMapType>::_generate_next_generation_block() {
 		if (this->option.generationMethod == GenerationMethod::DEFAULT or
 			this->option.generationMethod == GenerationMethod::FALLING_BLOCK_COREPLACING) {
-			this->_generate_next_generation_block_coreplacing();
+			this->_generate_next_generation_block_coreplacing(0, 0);
 		} else {
 			//Only Co-replacing Method is supported now. Raise the error!
 			throw std::runtime_error(
@@ -55,27 +55,51 @@ namespace InGameOperation::Generation {
 	}
 
 	template<typename BlockMapType>
-	std::string FallingBlockGenerator<BlockMapType>::_generate_next_generation_block_coreplacing() {
+	std::string FallingBlockGenerator<BlockMapType>::_generate_next_generation_block_coreplacing(int gen_buffer,
+																								 int positionIndex) {
 		//TODO: finish the generation block algorithm
-		int self_position = this->next_gen_buffer;
-		if (this->next_gen_buffer < this->map.getSize()) {
-			this->next_gen_buffer += this->option.maxStackHeight - Constants::STACK_FUNCTIONAL_BLOCKS;
-			this->positionIndex++;
-			if (positionIndex >= this->positions.size()) {
-				this->positionIndex = 0;
-			}
-			auto res = _generate_next_generation_block_coreplacing();
+		std::string prefix = "/setblock ";
+		std::string result;
+		if (gen_buffer < this->map.getSize()) {
+			result = _generate_next_generation_block_coreplacing(
+					gen_buffer + this->option.maxStackHeight - Constants::STACK_FUNCTIONAL_BLOCKS,
+					(positionIndex + 1 >= positions.size() ?
+					 0 : positionIndex + 1));
 
 		} else {
 
 		}
-		this->positionIndex--;
-		if (this->positionIndex < 0) {
-			this->positionIndex = this->positions.size() - 1;
+
+		for (int sub_index = 0;
+			 gen_buffer + sub_index < this->map.getSize() and
+			 sub_index < this->option.maxStackHeight - Constants::STACK_FUNCTIONAL_BLOCKS; sub_index++) {
+
 		}
 		return std::string();
 	}
 
+	template<typename BlockMapType>
+	std::string FallingBlockGenerator<BlockMapType>::_generate_generation_stack(nbt::tag_list::iterator begin,
+																				nbt::tag_list::iterator end,
+																				Data::Position target_base_pos) {
+		std::vector<std::string> block_generation_commands;
+		for (; begin != end; begin++) {
+			nbt::tag_compound &block = begin->as<nbt::tag_compound>();
+			nbt::tag_compound &palette = this->map.getPalette(block);
+			nbt::tag_compound &nbt = block[TagNameStandard::NBT].as<nbt::tag_compound>();
+			std::stringstream generation_command_sstream;
+			generation_command_sstream << "/setblock "
+									   << target_base_pos.x << " " << target_base_pos.y << " " << target_base_pos.z
+									   << " " << (std::string) palette[TagNameStandard::NAME]
+									   << nbt;
+			block_generation_commands.push_back(generation_command_sstream.str());
+		}
+		std::ostringstream ostringstream;
+		ostringstream << "/setblock "
+					  << target_base_pos.x << " " << target_base_pos.y << " " << target_base_pos.z
+					  << " minecraft:command_block";
+		return std::string();
+	}
 
 	//Constructors, setters, and getters
 	template<typename BlockMapType>
@@ -101,63 +125,6 @@ namespace InGameOperation::Generation {
 		FallingBlockGenerator::positions = std::move(positions);
 	}
 
-
-	//Calculating and resetting
-	template<typename BlockMapType>
-	void FallingBlockGenerator<BlockMapType>::reset_data() {
-		this->current_x = this->current_y = this->current_z = this->next_gen_buffer = this->positionIndex = 0;
-	}
-
-
-	template<typename BlockMapType>
-	int FallingBlockGenerator<BlockMapType>::getPositionIndex() const {
-		return positionIndex;
-	}
-
-	template<typename BlockMapType>
-	void FallingBlockGenerator<BlockMapType>::setPositionIndex(int positionIndex) {
-		FallingBlockGenerator::positionIndex = positionIndex;
-	}
-
-	template<typename BlockMapType>
-	int FallingBlockGenerator<BlockMapType>::getCurrentX() const {
-		return current_x;
-	}
-
-	template<typename BlockMapType>
-	void FallingBlockGenerator<BlockMapType>::setCurrentX(int currentX) {
-		current_x = currentX;
-	}
-
-	template<typename BlockMapType>
-	int FallingBlockGenerator<BlockMapType>::getCurrentY() const {
-		return current_y;
-	}
-
-	template<typename BlockMapType>
-	void FallingBlockGenerator<BlockMapType>::setCurrentY(int currentY) {
-		current_y = currentY;
-	}
-
-	template<typename BlockMapType>
-	int FallingBlockGenerator<BlockMapType>::getCurrentZ() const {
-		return current_z;
-	}
-
-	template<typename BlockMapType>
-	void FallingBlockGenerator<BlockMapType>::setCurrentZ(int currentZ) {
-		current_z = currentZ;
-	}
-
-	template<typename BlockMapType>
-	int FallingBlockGenerator<BlockMapType>::getNextGenBuffer() const {
-		return next_gen_buffer;
-	}
-
-	template<typename BlockMapType>
-	void FallingBlockGenerator<BlockMapType>::setNextGenBuffer(int nextGenBuffer) {
-		next_gen_buffer = nextGenBuffer;
-	}
 
 	template
 	class FallingBlockGenerator<StructureBlockMap>;

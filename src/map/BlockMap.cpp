@@ -31,8 +31,11 @@ namespace InGameOperation {
 			TagNameStandard::AUTHOR = "author",
 			TagNameStandard::SIZE = "size",
 			TagNameStandard::POS = "pos",
+			TagNameStandard::NBT = "nbt",
 			TagNameStandard::STATE = "state",
 			TagNameStandard::PALETTE = "palette",
+			TagNameStandard::NAME = "Name",
+			TagNameStandard::PROPERTIES = "Properties",
 			TagNameStandard::DATA_VERSION = "DataVersion";
 
 	template<typename Root>
